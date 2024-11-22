@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Attendance In SpringBoot</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<!-- Navbar -->
+<div th:replace="fragments/navbar"></div>
+
+
+
+
+
+
+
+<!-- Main content -->
+<div class=" mt-5">
+
+  <div class="row">
+    <div class="col-lg-1 col-md-6"></div>
+
+
+    <div class="col-lg-6 col-md-12">
+      <table class="table">
+        <thead>
+        <tr >
+          <th>Level Id</th>
+          <th>Level Name</th>
+          <th>Department Name</th>
+
+          <!--                    <th th:each="level : ${levels}" th:text="${level.department.department_name + '-' + level.levelName}">Level</th>-->
+
+
+          <th>action</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="level, stat:${levels}">
+
+          <td th:text="${stat.index+1}"></td>
+          <td th:text="${level.levelName}"></td>
+
+          <td th:text="${level.department.department_name}"></td>
+
+          <td>
+
+            <div class="btn-group dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Report
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" th:href="@{/report/daily(levelId=${level.levelId}, date=${T(java.time.LocalDate).now()})}">Daily</a></li>
+                <li><a class="dropdown-item" th:href="@{/report/weekly/{levelId}(levelId=${level.levelId})}">Weekly</a></li>
+                <li><a class="dropdown-item" th:href="@{/report/monthly/{levelId}(levelId=${level.levelId})}">Monthly</a></li>
+                <li><a class="dropdown-item" th:href="@{/report/AllData/{levelId}(levelId=${level.levelId})}">All Data</a></li>
+
+              </ul>
+            </div>
+          </td>
+
+        </tr>
+
+        </tbody>
+
+        <tfoot>
+        <tr>
+          <th>Level Id</th>
+          <th>Level Name</th>
+          <th>Department Id</th>
+
+          <th>action</th>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- Footer -->
+<footer class="bg-light text-center text-lg-start mt-5">
+  <div class="container p-4">
+    <div class="row">
+      <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+        <h5 class="text-uppercase">Footer Content</h5>
+        <p>
+          Here you can use rows and columns to organize your footer content.
+        </p>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+        <h5 class="text-uppercase">Links</h5>
+        <ul class="list-unstyled mb-0">
+          <li>
+            <a href="#!" class="text-dark">Link 1</a>
+          </li>
+          <li>
+            <a href="#!" class="text-dark">Link 2</a>
+          </li>
+          <li>
+            <a href="#!" class="text-dark">Link 3</a>
+          </li>
+          <li>
+            <a href="#!" class="text-dark">Link 4</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+        <h5 class="text-uppercase mb-0">Links</h5>
+        <ul class="list-unstyled">
+          <li>
+            <a href="#!" class="text-dark">Link 1</a>
+          </li>
+          <li>
+            <a href="#!" class="text-dark">Link 2</a>
+          </li>
+          <li>
+            <a href="#!" class="text-dark">Link 3</a>
+          </li>
+          <li>
+            <a href="#!" class="text-dark">Link 4</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center p-3 bg-light">
+    © 2024 Copyright:
+    <a class="text-dark" href="https://yourwebsite.com/">YourWebsite.com</a>
+  </div>
+</footer>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time-Tracker</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+      color: #343a40;
+    }
+
+    .sidebar {
+      background-color: #343a40;
+      color: white;
+      min-height: 100vh;
+      transition: all 0.3s;
+    }
+    .sidebar .nav-link {
+      color: white;
+    }
+    .sidebar .nav-link:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+    .online-status {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+    }
+    #sidebar-toggle {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+    }
+    @media (min-width: 768px) {
+      #sidebar-toggle {
+        display: none;
+      }
+    }
+    @media (max-width: 767.98px) {
+      #sidebar {
+        position: fixed;
+        top: 0;
+        left: -250px;
+        height: 100vh;
+        z-index: 999;
+        width: 250px;
+      }
+      #sidebar.active {
+        left: 0;
+      }
+      .content-wrapper {
+        margin-left: 0;
+      }
+    }
+    .content-wrapper {
+      transition: margin-left 0.3s;
+      margin-left: 250px;
+    }
+    @media (max-width: 767.98px) {
+      .content-wrapper {
+        margin-left: 0;
+      }
+    }
+    .card {
+      border: 1px solid #dee2e6;
+      border-radius: 0.375rem;
+    }
+    .card-header {
+      background-color: #007bff;
+      color: #ffffff;
+      border-bottom: 1px solid #dee2e6;
+    }
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+    .btn-secondary {
+      background-color: #6c757d;
+      border-color: #6c757d;
+    }
+    .btn-secondary:disabled {
+      opacity: 0.65;
+    }
+  </style>
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar inclusion -->
+
+    <div th:replace="hod/fragments/sidebar"></div>
+
+    <!-- Main content -->
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+      <div th:replace="hod/fragments/navbars"></div>
+
+      <!-- Rest of the main content -->
+      <div class=" mt-5">
+
+        <div class="row">
+
+
+
+
+
+          <div class="col-lg-12 col-md-12">
+            <a href="#" onclick="window.history.back();" class="btn btn-secondary mb-3">Back</a>
+            <h1>Monthly Attendance Report (Level: <span th:text="${levelId}"></span>, Month: <span th:text="${selectedMonth}"></span>)</h1>
+
+            <button class="btn btn-secondary" onclick="sendSMS()">Send SMS</button>
+<br><br>
+
+            <table id="studentTable" class="table">
+
+
+
+
+  <thead>
+  <tr>
+    <th>Student ID</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Parent Phone Number</th>
+    <th>Total Duration</th>
+    <th>Per </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="record : ${attendanceRecords}">
+    <td th:text="${record[0]}"></td> <!-- Student ID -->
+    <td th:text="${record[1]}"></td> <!-- First Name -->
+    <td th:text="${record[2]}"></td> <!-- Last Name -->
+    <td th:text="${record[3]}"></td> <!-- Parent Phone Number -->
+    <td th:text="${record[4]}"></td> <!-- Total Duration in HH:mm format -->
+    <td th:text="${totalDuration}"></td>
+  </tr>
+  </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+
+    </main>
+  </div>
+</div>
+
+<div class="online-status">
+  <i class="fas fa-circle"></i>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+<!-- jQuery (necessary for DataTables) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script>
+
+  $(document).ready(function() {
+    $('#studentTable').DataTable();
+  });
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var sidebarToggle = document.getElementById('sidebar-toggle');
+    var sidebar = document.getElementById('sidebar');
+    var contentWrapper = document.querySelector('.content-wrapper');
+
+    sidebarToggle.addEventListener('click', function() {
+      sidebar.classList.toggle('active');
+      if (window.innerWidth > 767.98) {
+        contentWrapper.style.marginLeft = sidebar.classList.contains('active') ? '250px' : '0';
+      }
+    });
+
+    // Handle resize events
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 767.98) {
+        sidebar.classList.remove('active');
+        contentWrapper.style.marginLeft = '250px';
+      } else {
+        contentWrapper.style.marginLeft = '0';
+      }
+    });
+  });
+
+
+  function sendSMS() {
+    let messages = [];
+    $('#studentTable tbody tr').each(function() {
+      const firstName = $(this).find('td:nth-child(2)').text().trim();
+      const lastName = $(this).find('td:nth-child(3)').text().trim();
+      const phoneNumber = $(this).find('td:nth-child(4)').text().trim();
+      const duration = $(this).find('td:nth-child(5)').text().trim();
+      const per = $(this).find('td:nth-child(6)').text().trim();
+
+      if (phoneNumber) {
+        const messageText = `Mwiriwe umwana wanyu  ${firstName} ${lastName}, akaba yarize amasaha ${duration} mu nkwezi mugihe yakabaye yarize amasaha ${per} murakoze.`;
+        messages.push({
+          destinations: [{ to: phoneNumber }],
+          from: "myCargo",
+          text: messageText
+        });
+      }
+    });
+
+    if (messages.length === 0) {
+      alert('No phone numbers available to send SMS.');
+      return;
+    }
+
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", "App f631a0c43ef68a7a5ad79012811fd374-148af4b7-a80c-4335-8357-3d32752a118d");
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Accept", "application/json");
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify({ messages }),
+      redirect: "follow"
+    };
+
+    fetch("https://yp5l4j.api.infobip.com/sms/2/text/advanced", requestOptions)
+            .then(response => response.json())  // Change to JSON to handle the API response
+            .then(result => {
+              console.log(result);
+              // Check if the API returns success messages
+              if (result.messages && result.messages.length > 0) {
+                alert('SMS successfully sent to all valid numbers.');
+              } else {
+                alert('There was an issue sending the SMS. Please check the details.');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('An error occurred while sending the SMS.');
+            });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+    <button id="sidebar-toggle" class="btn btn-primary">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="input-group w-50">
+        <span class="input-group-text"><i class="fas fa-search"></i></span>
+        <input type="text" class="form-control" placeholder="Enter your search keyword">
+    </div>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <!-- User icon with dropdown -->
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-user"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                    <li><a class="dropdown-item" href="#"><span class="d-none d-sm-inline" th:text="${teachersUser.username}"></span></a></li>
+                    <li><a class="dropdown-item" th:href="@{/change-password}">Change Password</a></li> <!-- Pass username -->
+                    <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+                </ul>
+
+            </div>
+            <!-- Settings icon -->
+        </div>
+    </div>
+</div>

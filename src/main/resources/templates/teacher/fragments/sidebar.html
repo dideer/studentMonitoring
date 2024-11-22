@@ -1,0 +1,19 @@
+<!-- sidebar.php -->
+<nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar">
+    <div class="position-sticky pt-3">AI-Based Day Student Monitoring System</h5>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-home me-2"></i>Dashboard</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#projectsSubmenu"><i class="fas fa-folder me-2"></i>Session <i class="fas fa-caret-down float-end"></i></a>
+                <ul class="collapse nav flex-column ms-3" id="projectsSubmenu">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/teacher/registerSession}">Session Management</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/teacher/getAllSession}">Make Attendance</a></li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+</nav>

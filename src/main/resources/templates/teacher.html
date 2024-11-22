@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance In SpringBoot</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+
+        .sidebar {
+            background-color: #343a40;
+            color: white;
+            min-height: 100vh;
+            transition: all 0.3s;
+        }
+        .sidebar .nav-link {
+            color: white;
+        }
+        .sidebar .nav-link:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        .online-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+        #sidebar-toggle {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+        }
+        @media (min-width: 768px) {
+            #sidebar-toggle {
+                display: none;
+            }
+        }
+        @media (max-width: 767.98px) {
+            #sidebar {
+                position: fixed;
+                top: 0;
+                left: -250px;
+                height: 100vh;
+                z-index: 999;
+                width: 250px;
+            }
+            #sidebar.active {
+                left: 0;
+            }
+            .content-wrapper {
+                margin-left: 0;
+            }
+        }
+        .content-wrapper {
+            transition: margin-left 0.3s;
+            margin-left: 250px;
+        }
+        @media (max-width: 767.98px) {
+            .content-wrapper {
+                margin-left: 0;
+            }
+        }
+        .card {
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: #ffffff;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        .btn-secondary:disabled {
+            opacity: 0.65;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar inclusion -->
+
+        <div th:replace="admin/fragments/sidebar"></div>
+
+        <!-- Main content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+            <div th:replace="admin/fragments/navbars"></div>
+            <!-- Form Section -->
+
+
+
+
+            <!-- Main content -->
+<div class=" mt-5">
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 ">
+            <h1 th:text="${teacher.teacherId} != null ? 'Update Teacher' : 'Add Teacher'">Add Teacher</h1>
+            <form
+                    th:action="${teacher.teacherId} != null ? @{'/admin/updateDepartment/' + ${teacher.teacherId}} : @{/admin/addTeacher}"
+                    method="post"
+                    th:object="${teacher}"
+                    class="registration-form"
+            >
+                <div class="row">
+                    <div class="form-group col-lg-3 col-md-12">
+                        <label for="teacherName">Teacher Name</label>
+                        <input th:field="*{teacherName}" type="text" class="form-control" id="teacherName" placeholder="Enter Teacher name">
+                    </div>
+                    <div class="form-group col-lg-3 col-md-12">
+                        <label for="teacherName">Teacher Email</label>
+                        <input th:field="*{teacherEmail}" type="text" class="form-control" id="teacherEmail" placeholder="Enter Teacher name">
+                    </div>
+                    <div class="form-group col-lg-3 col-md-12">
+                        <label for="phoneNumber">Teacher PhoneNumber</label>
+                        <input th:field="*{phoneNumber}" type="text" class="form-control" id="phoneNumber" placeholder="Enter Teacher name">
+                    </div>
+
+                    <div class="form-group col-lg-3 col-md-12">
+                        <label for="address">Teacher address</label>
+                        <input th:field="*{address}" type="text" class="form-control" id="address" placeholder="Enter Teacher name">
+                    </div>
+                </div>
+                <br>
+
+
+
+
+
+                <center><button type="submit" class="btn btn-primary">Submit</button></center>
+            </form>
+        </div>
+
+    </div>
+
+
+    <div class="row">
+
+
+
+        <div class="col-lg-12 col-md-12">
+            <a href="#" onclick="window.history.back();" class="btn btn-secondary mb-3">Back</a>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Teacher Id</th>
+                    <th>Teacher Name</th>
+                    <th>Teacher Email</th>
+                    <th>Teacher PhoneNumber</th>
+
+                    <th>Teacher Address</th>
+
+                    <th>action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="teacher,stat:${teachers}">
+                    <td th:text="${stat.index+1}"></td>
+
+                    <td th:text="${teacher.teacherName}"></td>
+                    <td th:text="${teacher.teacherEmail}"></td>
+                    <td th:text="${teacher.phoneNumber}"></td>
+                    <td th:text="${teacher.address}"></td>
+
+                    <td>
+<!--                    <a th:href="@{/admin/teacher/edit/{teacherId}(teacherId=${teacher.teacherId})}" class="btn btn-primary">Update</a>-->
+                        <a th:href="@{/admin/teacher/addUser/{teacherId}(teacherId=${teacher.teacherId})}" class="btn btn-primary">add User</a>
+                        <a th:href="@{/admin/teacher/add/{teacherId}(teacherId=${teacher.teacherId})}" class="btn btn-primary">add</a>
+
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+                <tfoot>
+                <tr>
+                    <th>Teacher Id</th>
+                    <th>Teacher Name</th>
+                    <th>Teacher Email</th>
+                    <th>Teacher PhoneNumber</th>
+
+                    <th>Teacher Address</th>
+
+                    <th>action</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+        </main>
+    </div>
+</div>
+
+<div class="online-status">
+    <i class="fas fa-circle"></i>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var sidebarToggle = document.getElementById('sidebar-toggle');
+        var sidebar = document.getElementById('sidebar');
+        var contentWrapper = document.querySelector('.content-wrapper');
+
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+            if (window.innerWidth > 767.98) {
+                contentWrapper.style.marginLeft = sidebar.classList.contains('active') ? '250px' : '0';
+            }
+        });
+
+        // Handle resize events
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 767.98) {
+                sidebar.classList.remove('active');
+                contentWrapper.style.marginLeft = '250px';
+            } else {
+                contentWrapper.style.marginLeft = '0';
+            }
+        });
+    });
+</script>
+</body>
+</html>

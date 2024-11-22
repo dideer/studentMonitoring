@@ -1,0 +1,21 @@
+    @GetMapping("/report/monthly/{levelId}")
+    public String showMonthlySelectionPage(@PathVariable("levelId") Long levelId, Model model) {
+        // Pass the levelId to the view so we can include it in the form
+        model.addAttribute("levelId", levelId);
+        return "hod/monthlyReport";  // Return the Thymeleaf template for month selection
+    }
+
+    @GetMapping("/report/monthly/{levelId}/report")
+    public String getMonthlyReport(
+            @PathVariable("levelId") Long levelId,
+            @RequestParam("month") int month,
+            Model model) {
+        // Use the levelId and selected month to get attendance records
+        List<Attendance> monthlyAttendance = attendanceService.getMonthlyAttendanceByLevel(levelId, month);
+
+        // Pass the data to the view
+        model.addAttribute("attendanceRecords", monthlyAttendance);
+        model.addAttribute("selectedMonth", month);
+        model.addAttribute("levelId", levelId);
+        return "hod/monthlyReportView";  // View that shows the report
+    }

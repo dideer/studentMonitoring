@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - Student Attendance</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container d-flex align-items-center justify-content-center vh-100">
+    <div class="card p-4 shadow-lg" style="width: 24rem;">
+        <h3 class="text-center mb-4">Create Account</h3>
+
+        <!-- Error message display -->
+        <div th:if="${errorMessage != null}" class="alert alert-danger" role="alert">
+            <span th:text="${errorMessage}"></span>
+        </div>
+
+        <form th:action="@{/register}" method="POST" onsubmit="return validateForm()">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required oninput="validateUsername()">
+                <small id="usernameError" class="form-text text-danger"></small>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required oninput="validatePassword()">
+                <small id="passwordError" class="form-text text-danger"></small>
+            </div>
+            <input type="hidden" name="teacher">
+            <input type="hidden" th:value="${hods.hodId}" name="hod">
+
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select class="form-control" id="role" name="role" required oninput="validateRole()" readonly>
+                    <option value="">Select a role</option>
+                    <option value="admin">Admin</option>
+                    <option value="HoD" selected>HoD</option>
+                </select>
+                <small id="roleError" class="form-text text-danger"></small>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+        </form>
+        <div class="text-center mt-3">
+            <p>Already have an account? <a th:href="@{/login}">Login</a></p>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- JavaScript for real-time validation -->
+<script>
+    function validateUsername() {
+        const username = document.getElementById("username").value;
+        const usernameError = document.getElementById("usernameError");
+        if (username.length < 3) {
+            usernameError.textContent = "Username must be at least 3 characters long.";
+            return false;
+        } else {
+            usernameError.textContent = "";
+            return true;
+        }
+    }
+
+    function validatePassword() {
+        const password = document.getElementById("password").value;
+        const passwordError = document.getElementById("passwordError");
+        if (password.length < 6) {
+            passwordError.textContent = "Password must be at least 6 characters long.";
+            return false;
+        } else {
+            passwordError.textContent = "";
+            return true;
+        }
+    }
+
+    function validateRole() {
+        const role = document.getElementById("role").value;
+        const roleError = document.getElementById("roleError");
+        if (role === "") {
+            roleError.textContent = "Please select a role.";
+            return false;
+        } else {
+            roleError.textContent = "";
+            return true;
+        }
+    }
+
+    function validateForm() {
+        const isUsernameValid = validateUsername();
+        const isPasswordValid = validatePassword();
+        const isRoleValid = validateRole();
+        return isUsernameValid && isPasswordValid && isRoleValid;
+    }
+</script>
+
+</body>
+</html>

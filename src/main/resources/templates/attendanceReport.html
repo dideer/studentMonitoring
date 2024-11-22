@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student List</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <!-- jQuery UI CSS for Datepicker -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">All Attendance</h2>
+
+    <!-- Buttons for reports -->
+    <div class="mb-4">
+        <button id="todayReportBtn" class="btn btn-primary"><a th:href="@{/allLevel}" >Today's Report</a> </button>
+        <button id="weeklyReportBtn" class="btn btn-secondary"><a th:href="@{/allLevel}">  Weekly Report</a></button>
+        <button id="monthlyReportBtn" class="btn btn-success"> <a th:href="@{/allLevel}">Monthly Report </a></button>
+    </div>
+
+    <!-- Date Range Selection -->
+
+
+    <!-- Student Table -->
+    <table id="studentTable" class="table table-striped table-bordered">
+
+
+    </table>
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- jQuery UI for Datepicker -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+
+</script>
+
+</body>
+</html>

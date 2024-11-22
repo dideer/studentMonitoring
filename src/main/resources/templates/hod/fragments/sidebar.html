@@ -1,0 +1,31 @@
+<!-- sidebar.php -->
+<nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar">
+    <div class="position-sticky pt-3">AI-Based Day Student Monitoring System</h5>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/hod/}"><i class="fas fa-home me-2"></i>Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#reportsSubmenu"><i class="fas fa-chart-pie me-2"></i>Report <i class="fas fa-caret-down float-end"></i></a>
+                <ul class="collapse nav flex-column ms-3" id="reportsSubmenu">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/hod/report}">Class Report</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/hod/gateReport}">Gate Report`</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#projectsSubmenu"><i class="fas fa-folder me-2"></i>Session Management<i class="fas fa-caret-down float-end"></i></a>
+                <ul class="collapse nav flex-column ms-3" id="projectsSubmenu">
+
+                    <li class="nav-item"><a class="nav-link" th:href="@{/hod/session/getLevel}">Level</a></li>
+
+
+                </ul>
+            </li>
+
+
+
+
+        </ul>
+
+    </div>
+</nav>

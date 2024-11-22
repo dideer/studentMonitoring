@@ -1,0 +1,46 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Subjects</title>-->
+<!--    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">-->
+<!--</head>-->
+<!--<body>-->
+<!--&lt;!&ndash; Navbar &ndash;&gt;-->
+<!--<div th:replace="/teacher/fragments/navbar"></div>-->
+
+<!--<br><br>-->
+
+<!--<div class="container mt-5">-->
+<!--    <a href="#" onclick="window.history.back();" class="btn btn-secondary mb-3">Back</a>-->
+
+<!--    <h1>Subjects for <span th:text="${teacher.teacherName}"></span></h1>-->
+
+<!--    <table class="table">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th>Subject Name</th>-->
+<!--            <th>Level Name</th>-->
+<!--            <th>Department Name</th>-->
+<!--            <th>Action</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        <tr th:each="subjectITs : ${subjectIT}">-->
+<!--            <td th:text="${subjectITs.subject.subjectName}"></td>-->
+<!--            <td th:text="${subjectITs.subject.level.levelName}"></td>-->
+<!--            <td th:text="${subjectITs.subject.level.department.department_name}"></td>-->
+<!--            <td>-->
+<!--                &lt;!&ndash; Add Session Button for Each Subject &ndash;&gt;-->
+<!--                <a href="#" th:href="@{/addSession/{subjectCode}(subjectCode=${subjectITs.subject.subjectCode})}" class="btn btn-primary btn-sm">Add Session</a>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Bootstrap JS and dependencies &ndash;&gt;-->
+
+<!--</body>-->
+<!--</html>-->

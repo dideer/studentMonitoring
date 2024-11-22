@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student List</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <!-- jQuery UI CSS for Datepicker -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">All Attendance</h2>
+
+    <!-- Buttons for reports -->
+    <div class="mb-4">
+        <button id="todayReportBtn" class="btn btn-primary">Today's Report</button>
+        <button id="weeklyReportBtn" class="btn btn-secondary">Weekly Report</button>
+        <button id="monthlyReportBtn" class="btn btn-success">Monthly Report</button>
+    </div>
+
+    <!-- Date Range Selection -->
+    <div class="mb-4">
+        <label for="startDate">Start Date:</label>
+        <input type="text" id="startDate" class="form-control d-inline-block w-auto">
+        <label for="endDate" class="ml-2">End Date:</label>
+        <input type="text" id="endDate" class="form-control d-inline-block w-auto">
+        <button id="customReportBtn" class="btn btn-info ml-2">Filter</button>
+    </div>
+
+    <!-- Student Table -->
+    <table id="studentTable" class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>Attendance ID</th>
+            <th>Duration</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Student</th>
+            <th>Session ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Loop through the list of students -->
+        <tr th:each="attendance : ${attendances}">
+            <td th:text="${attendance.attendanceId}"></td>
+            <td th:text="${attendance.duration}"></td>
+            <td th:text="${attendance.status}"></td>
+            <td th:text="${#temporals.format(attendance.timestamp, 'yyyy-MM-dd')}"></td>
+            <td th:text="${attendance.student.firstName + ' ' + attendance.student.lastName}"></td>
+            <td th:text="${attendance.teacherSession.session_id}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- jQuery UI for Datepicker -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        var table = $('#studentTable').DataTable();
+
+        function filterByDateRange(startDate, endDate) {
+            $.fn.dataTable.ext.search.push(
+                function(settings, data, dataIndex) {
+                    var date = data[3]; // Date column in your table
+                    if (date >= startDate && date <= endDate) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+            table.draw();
+            $.fn.dataTable.ext.search.pop();
+        }
+
+        // Initialize datepickers
+        $("#startDate, #endDate").datepicker({
+            dateFormat: 'yy-mm-dd'
+        });
+
+        $('#todayReportBtn').click(function() {
+            var today = new Date().toISOString().split('T')[0];
+            filterByDateRange(today, today);
+        });
+
+        $('#weeklyReportBtn').click(function() {
+            var today = new Date();
+            var firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay())).toISOString().split('T')[0];
+            var lastDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 6)).toISOString().split('T')[0];
+            filterByDateRange(firstDayOfWeek, lastDayOfWeek);
+        });
+
+        $('#monthlyReportBtn').click(function() {
+            var today = new Date();
+            var firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
+            var lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).toISOString().split('T')[0];
+            filterByDateRange(firstDayOfMonth, lastDayOfMonth);
+        });
+
+        $('#customReportBtn').click(function() {
+            var startDate = $('#startDate').val();
+            var endDate = $('#endDate').val();
+            filterByDateRange(startDate, endDate);
+        });
+    });
+</script>
+
+</body>
+</html>
